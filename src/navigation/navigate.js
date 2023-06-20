@@ -1,7 +1,8 @@
-import { readdir, stat } from 'node:fs/promises';
+import { readdir } from 'node:fs/promises';
 import { env } from 'node:process';
 import { homedir } from 'node:os';
-import path, { dirname } from 'node:path';
+import { dirname } from 'node:path';
+import { createObjectFiles, sortedObjectFiles } from './helpers.js';
 
 env.work_directory = homedir();
 
@@ -13,20 +14,11 @@ export const updateWorkingDirectory = () => {
 
 export const listFiles = async () => {
   try {
-    const files = await readdir(env.work_directory);
-    const getArrObjectFile = files.map(async (item) => {
-      const pathUrl = path.join(env.work_directory, item);
-      const pathItem = await stat(pathUrl);
-      const type = pathItem.isDirectory() ? 'directory' : 'file';
-      return { Name: item, Type: type };
-    });
+    const files = await readdir(env.work_directory, { withFileTypes: true });
+    const getArrObjectFile = files.map(createObjectFiles);
     const listFilesTable = await Promise.all(getArrObjectFile);
-    listFilesTable.sort(
-      (a, b) =>
-        a.Type.localeCompare(b.Type) ||
-        a.Name.toLowerCase().localeCompare(b.Name.toLowerCase())
-    );
-    console.table(listFilesTable);
+    listFilesTable.sort(sortedObjectFiles);
+    console.log(table);
   } catch (err) {
     console.error(err);
   }
