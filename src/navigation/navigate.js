@@ -12,13 +12,17 @@ export const updateWorkingDirectory = () => {
   env.work_directory = dirname(env.work_directory);
 };
 
+export const movedNewWorkingDirectory = (path) => {
+  console.log(path.toString());
+};
+
 export const listFiles = async () => {
   try {
     const files = await readdir(env.work_directory, { withFileTypes: true });
     const getArrObjectFile = files.map(createObjectFiles);
     const listFilesTable = await Promise.all(getArrObjectFile);
     listFilesTable.sort(sortedObjectFiles);
-    console.log(table);
+    console.table(listFilesTable);
   } catch (err) {
     console.error(err);
   }

@@ -1,20 +1,30 @@
 import { stdin, exit } from 'node:process';
 import { env } from 'node:process';
 import './greeting/greeting.js';
-import { updateWorkingDirectory, listFiles } from './navigation/navigate.js';
+import {
+  updateWorkingDirectory,
+  listFiles,
+  movedNewWorkingDirectory,
+} from './navigation/navigate.js';
 
 stdin.on('data', async (data) => {
-  if (data.includes('up')) {
-    updateWorkingDirectory();
+  const convertDataString = data.toString().trim();
+  switch (convertDataString) {
+    case 'up':
+      updateWorkingDirectory();
+      break;
+    case 'ls':
+      await listFiles();
+      break;
+    case 'cd':
+      movedNewWorkingDirectory(convertData);
+      break;
+    case '.exit':
+      exit(0);
+    default:
+      console.log('Invalid input');
   }
-  if (data.includes('ls')) {
-    await listFiles();
-  }
-  if (data.includes('.exit')) {
-    exit(0);
-  } else {
-    console.log(`You are currently in ${env.work_directory}`);
-  }
+  console.log(`You are currently in ${env.work_directory}`);
 });
 
 process.on('SIGINT', () => exit(0));
