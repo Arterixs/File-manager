@@ -3,12 +3,12 @@ import { env } from 'node:process';
 import './greeting/greeting.js';
 import { updateWorkingDirectory, listFiles } from './navigation/navigate.js';
 
-stdin.on('data', (data) => {
+stdin.on('data', async (data) => {
   if (data.includes('up')) {
     updateWorkingDirectory();
   }
   if (data.includes('ls')) {
-    listFiles();
+    await listFiles();
   }
   if (data.includes('.exit')) {
     exit(0);
