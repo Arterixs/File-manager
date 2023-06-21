@@ -7,9 +7,14 @@ import {
   movedNewWorkingDirectory,
 } from './navigation/navigate.js';
 
-stdin.on('data', async (data) => {
+const correctValueStdin = (data) => {
   const convertDataString = data.toString().trim();
   const command = convertDataString.split(/\s/).at(0);
+  return command;
+};
+
+stdin.on('data', async (data) => {
+  const command = correctValueStdin(data);
   switch (command) {
     case 'up':
       upWorkingDirectory();
