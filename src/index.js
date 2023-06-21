@@ -2,22 +2,23 @@ import { stdin, exit } from 'node:process';
 import { env } from 'node:process';
 import './greeting/greeting.js';
 import {
-  updateWorkingDirectory,
+  upWorkingDirectory,
   listFiles,
   movedNewWorkingDirectory,
 } from './navigation/navigate.js';
 
 stdin.on('data', async (data) => {
   const convertDataString = data.toString().trim();
-  switch (convertDataString) {
+  const command = convertDataString.split(/\s/).at(0);
+  switch (command) {
     case 'up':
-      updateWorkingDirectory();
+      upWorkingDirectory();
       break;
     case 'ls':
       await listFiles();
       break;
     case 'cd':
-      movedNewWorkingDirectory(convertData);
+      await movedNewWorkingDirectory(convertDataString);
       break;
     case '.exit':
       exit(0);
