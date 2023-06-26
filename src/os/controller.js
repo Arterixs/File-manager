@@ -3,6 +3,7 @@ import { getEol } from './getEol.js';
 import { getHomedir } from './getHomedir.js';
 import { getInfoProccesor } from './getInfoProccesor.js';
 import { getUsername } from './getUsername.js';
+import { getArchitect } from './getArchitect.js';
 
 export const controller = (data) => {
   const command = data.split(/\s/).at(1).slice(2);
@@ -20,6 +21,7 @@ export const controller = (data) => {
       getUsername();
       break;
     case 'architecture':
+      getArchitect();
       break;
     default:
       messageInvalid();
