@@ -2,6 +2,7 @@ import { messageInvalid } from '../helpers.js';
 import { getEol } from './getEol.js';
 import { getHomedir } from './getHomedir.js';
 import { getInfoProccesor } from './getInfoProccesor.js';
+import { getUsername } from './getUsername.js';
 
 export const controller = (data) => {
   const command = data.split(/\s/).at(1).slice(2);
@@ -16,6 +17,7 @@ export const controller = (data) => {
       getHomedir();
       break;
     case 'username':
+      getUsername();
       break;
     case 'architecture':
       break;
