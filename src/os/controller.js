@@ -1,5 +1,6 @@
 import { messageInvalid } from '../helpers.js';
 import { getEol } from './getEol.js';
+import { getHomedir } from './getHomedir.js';
 import { getInfoProccesor } from './getInfoProccesor.js';
 
 export const controller = (data) => {
@@ -12,6 +13,7 @@ export const controller = (data) => {
       getInfoProccesor();
       break;
     case 'homedir':
+      getHomedir();
       break;
     case 'username':
       break;
