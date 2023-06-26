@@ -17,6 +17,7 @@ import { removeFile } from './fs/removeFile.js';
 import { controller } from './os/controller.js';
 import { calcHash } from './hash/calcHash.js';
 import { compress } from './gzip/compress.js';
+import { decompress } from './gzip/decompress.js';
 
 const rl = createInterface({
   input: stdin,
@@ -69,6 +70,9 @@ rl.on('line', async (data) => {
       break;
     case 'compress':
       compress(data);
+      break;
+    case 'decompress':
+      decompress(data);
       break;
     case '.exit':
       exit(0);
