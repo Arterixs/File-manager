@@ -6,7 +6,7 @@ import { getUsername } from './getUsername.js';
 import { getArchitect } from './getArchitect.js';
 
 export const controller = (data) => {
-  const command = data.split(/\s/).at(1).slice(2);
+  const command = data.split(/\s/).at(1)?.slice(2);
   switch (command) {
     case 'EOL':
       getEol();
