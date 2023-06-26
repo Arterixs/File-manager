@@ -3,17 +3,26 @@ import { rm } from 'node:fs/promises';
 import { env } from 'node:process';
 import { messageFsFailed, messageCurrentPath } from '../helpers.js';
 import { getNameFile } from './helpers.js';
-import path from 'node:path';
+import path, { normalize, isAbsolute } from 'node:path';
 
 export const movedFile = async (data) => {
   const getPath = data.split(/\s/).slice(1);
-  const pathToFile = path.resolve(env.work_directory, getPath.at(0));
+  const arrInfoPath = getPath.reduce((acc, item) => {
+    const obj = {};
+    obj.path = normalize(item);
+    obj.abs = isAbsolute(obj.path);
+    acc.push(obj);
+    return acc;
+  }, []);
+
+  const pathToFile = arrInfoPath[0].abs
+    ? path.resolve(arrInfoPath[0].path)
+    : path.resolve(env.work_directory, arrInfoPath[0].path);
   const nameFile = getNameFile(pathToFile);
-  const pathToDirectory = path.resolve(
-    env.work_directory,
-    getPath.at(1),
-    nameFile
-  );
+  const pathToDirectory = arrInfoPath[1].abs
+    ? path.resolve(arrInfoPath[1].path, nameFile)
+    : path.resolve(env.work_directory, arrInfoPath[1].path, nameFile);
+
   const readFile = createReadStream(pathToFile, { encoding: 'utf8' });
   const writeFile = createWriteStream(pathToDirectory, { flags: 'wx' });
   readFile.on('data', (chunk) => {

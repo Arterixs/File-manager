@@ -1,12 +1,16 @@
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
 import { messageFsFailed, messageCurrentPath } from '../helpers.js';
+import { checkAbsolutePath } from '../navigation/helpers.js';
 import { env } from 'node:process';
+import { EOL } from 'node:os';
 import path from 'node:path';
 
 export const calcHash = (data) => {
-  const getPath = data.split(/\s/).slice(1);
-  const pathToFile = path.resolve(env.work_directory, getPath.at(0));
+  const { isAbsolutePath, normalPath } = checkAbsolutePath(data.trim());
+  const pathToFile = isAbsolutePath
+    ? path.resolve(normalPath)
+    : path.resolve(env.work_directory, normalPath);
   const readFile = createReadStream(pathToFile, { encoding: 'utf8' });
   const hash = createHash('sha256');
   readFile.on('data', (chunk) => {
@@ -17,7 +21,7 @@ export const calcHash = (data) => {
     messageCurrentPath();
   });
   readFile.on('end', () => {
-    console.log(hash.digest('hex'));
+    console.log(`${EOL}${hash.digest('hex')}${EOL}`);
     messageCurrentPath();
   });
 };

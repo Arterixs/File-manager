@@ -1,4 +1,4 @@
-import path, { normalize, sep } from 'node:path';
+import path, { normalize, sep, isAbsolute } from 'node:path';
 import { env } from 'node:process';
 import { readdir } from 'node:fs/promises';
 import { messageFsFailed } from '../helpers.js';
@@ -59,4 +59,10 @@ export const shiftWorkingDirectory = async (pathNormal, isAbsPath) => {
   } else {
     messageFsFailed();
   }
+};
+
+export const checkAbsolutePath = (data) => {
+  const normalPath = normalizationPath(data);
+  const isAbsolutePath = isAbsolute(normalPath);
+  return { isAbsolutePath, normalPath };
 };

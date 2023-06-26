@@ -1,12 +1,15 @@
+import { messageCurrentPath, messageFsFailed } from '../helpers.js';
 import { createReadStream } from 'node:fs';
-import path from 'node:path';
 import { env } from 'node:process';
 import { EOL } from 'node:os';
-import { messageCurrentPath, messageFsFailed } from '../helpers.js';
+import { checkAbsolutePath } from '../navigation/helpers.js';
+import path from 'node:path';
 
 export const readFile = async (data) => {
-  const getPath = data.split(/\s/).slice(1).join(' ');
-  const pathReadFile = path.resolve(env.work_directory, getPath);
+  const { isAbsolutePath, normalPath } = checkAbsolutePath(data);
+  const pathReadFile = isAbsolutePath
+    ? path.resolve(normalPath)
+    : path.resolve(env.work_directory, normalPath);
   const readFile = createReadStream(pathReadFile, { encoding: 'utf8' });
   readFile.on('data', (chunk) => console.log(`${EOL}${chunk}${EOL}`));
   readFile.on('error', messageFsFailed);
