@@ -13,6 +13,7 @@ import { createFile } from './fs/createFile.js';
 import { renameFile } from './fs/renameFile.js';
 import { copyFile } from './fs/copyFile.js';
 import { movedFile } from './fs/movedFile.js';
+import { removeFile } from './fs/removeFile.js';
 
 const rl = createInterface({
   input: stdin,
@@ -51,6 +52,10 @@ rl.on('line', async (data) => {
       break;
     case 'mv':
       await movedFile(data);
+      break;
+    case 'rm':
+      await removeFile(data);
+      messageCurrentPath();
       break;
     case '.exit':
       exit(0);
