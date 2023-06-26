@@ -12,7 +12,7 @@ export const calcHash = (data) => {
   readFile.on('data', (chunk) => {
     hash.update(chunk);
   });
-  readFile.on('error', (err) => {
+  readFile.on('error', () => {
     messageFsFailed();
     messageCurrentPath();
   });
