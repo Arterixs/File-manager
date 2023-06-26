@@ -1,6 +1,7 @@
 import path, { normalize, sep } from 'node:path';
 import { env } from 'node:process';
 import { readdir } from 'node:fs/promises';
+import { messageFsFailed } from '../helpers.js';
 
 export const createObjectFiles = async (item) => {
   const type = item.isDirectory() ? 'directory' : 'file';
@@ -56,6 +57,6 @@ export const shiftWorkingDirectory = async (pathNormal, isAbsPath) => {
   if (isCorrectPath) {
     env.work_directory = pathUrl;
   } else {
-    console.log('Operation failed');
+    messageFsFailed();
   }
 };

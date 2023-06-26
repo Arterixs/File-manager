@@ -2,13 +2,14 @@ import { stdin, exit } from 'node:process';
 import { createInterface } from 'node:readline/promises';
 import { env } from 'node:process';
 import './greeting/greeting.js';
-import { messageCurrentPath } from './helpers.js';
+import { messageCurrentPath, messageInvalid } from './helpers.js';
 import {
   upWorkingDirectory,
   listFiles,
   movedNewWorkingDirectory,
 } from './navigation/navigate.js';
 import { readFile } from './fs/readFile.js';
+import { createFile } from './fs/createFile.js';
 
 const rl = createInterface({
   input: stdin,
@@ -34,10 +35,14 @@ rl.on('line', async (data) => {
     case 'cat':
       await readFile(data);
       break;
+    case 'add':
+      await createFile(data);
+      messageCurrentPath();
+      break;
     case '.exit':
       exit(0);
     default:
-      console.log('Invalid input');
+      messageInvalid();
   }
 });
 

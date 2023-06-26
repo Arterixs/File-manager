@@ -2,6 +2,7 @@ import { readdir } from 'node:fs/promises';
 import { env } from 'node:process';
 import { homedir } from 'node:os';
 import { dirname, isAbsolute } from 'node:path';
+import { messageFsFailed } from '../helpers.js';
 import {
   createObjectFiles,
   sortedObjectFiles,
@@ -22,7 +23,7 @@ export const movedNewWorkingDirectory = async (command) => {
     const pathNormal = normalizationPath(command);
     await shiftWorkingDirectory(pathNormal, isAbsolute(pathNormal));
   } catch (err) {
-    console.log('Operation failed');
+    messageFsFailed();
   }
 };
 
