@@ -11,6 +11,7 @@ import {
 import { readFile } from './fs/readFile.js';
 import { createFile } from './fs/createFile.js';
 import { renameFile } from './fs/renameFile.js';
+import { copyFile } from './fs/copyFile.js';
 
 const rl = createInterface({
   input: stdin,
@@ -43,6 +44,9 @@ rl.on('line', async (data) => {
     case 'rn':
       await renameFile(data);
       messageCurrentPath();
+      break;
+    case 'cp':
+      await copyFile(data);
       break;
     case '.exit':
       exit(0);
