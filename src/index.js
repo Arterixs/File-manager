@@ -15,6 +15,7 @@ import { copyFile } from './fs/copyFile.js';
 import { movedFile } from './fs/movedFile.js';
 import { removeFile } from './fs/removeFile.js';
 import { controller } from './os/controller.js';
+import { calcHash } from './hash/calcHash.js';
 
 const rl = createInterface({
   input: stdin,
@@ -61,6 +62,9 @@ rl.on('line', async (data) => {
     case 'os':
       controller(data);
       messageCurrentPath();
+      break;
+    case 'hash':
+      calcHash(data);
       break;
     case '.exit':
       exit(0);
