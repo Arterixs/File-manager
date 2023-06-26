@@ -1,36 +1,44 @@
 import { stdin, exit } from 'node:process';
+import { createInterface } from 'node:readline/promises';
 import { env } from 'node:process';
 import './greeting/greeting.js';
+import { messageCurrentPath } from './helpers.js';
 import {
   upWorkingDirectory,
   listFiles,
   movedNewWorkingDirectory,
 } from './navigation/navigate.js';
+import { readFile } from './fs/readFile.js';
 
-const correctValueStdin = (data) => {
-  const convertDataString = data.toString().trim();
-  const command = convertDataString.split(/\s/).at(0);
-  return command;
-};
+const rl = createInterface({
+  input: stdin,
+});
 
-stdin.on('data', async (data) => {
+const correctValueStdin = (data) => data.split(/\s/).at(0);
+
+rl.on('line', async (data) => {
   const command = correctValueStdin(data);
   switch (command) {
     case 'up':
       upWorkingDirectory();
+      messageCurrentPath();
       break;
     case 'ls':
       await listFiles();
+      messageCurrentPath();
       break;
     case 'cd':
-      await movedNewWorkingDirectory(convertDataString);
+      await movedNewWorkingDirectory(data);
+      messageCurrentPath();
+      break;
+    case 'cat':
+      await readFile(data);
       break;
     case '.exit':
       exit(0);
     default:
       console.log('Invalid input');
   }
-  console.log(`You are currently in ${env.work_directory}`);
 });
 
 process.on('SIGINT', () => exit(0));

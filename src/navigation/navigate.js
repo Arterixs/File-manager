@@ -22,7 +22,7 @@ export const movedNewWorkingDirectory = async (command) => {
     const pathNormal = normalizationPath(command);
     await shiftWorkingDirectory(pathNormal, isAbsolute(pathNormal));
   } catch (err) {
-    console.log('Invalid inputes');
+    console.log('Operation failed');
   }
 };
 

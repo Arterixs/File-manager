@@ -56,6 +56,6 @@ export const shiftWorkingDirectory = async (pathNormal, isAbsPath) => {
   if (isCorrectPath) {
     env.work_directory = pathUrl;
   } else {
-    console.log('Invalid input');
+    console.log('Operation failed');
   }
 };
