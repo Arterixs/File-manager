@@ -13,7 +13,7 @@ export const sortedObjectFiles = (a, b) =>
   a.Name.toLowerCase().localeCompare(b.Name.toLowerCase());
 
 export const normalizationPath = (path) => {
-  const pathCommand = path.split(/\s/).at(1);
+  const pathCommand = path.split(/\s/).slice(1).join(' ');
   const pathNormal = normalize(pathCommand);
   return pathNormal;
 };
