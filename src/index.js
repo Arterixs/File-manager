@@ -10,6 +10,7 @@ import {
 } from './navigation/navigate.js';
 import { readFile } from './fs/readFile.js';
 import { createFile } from './fs/createFile.js';
+import { renameFile } from './fs/renameFile.js';
 
 const rl = createInterface({
   input: stdin,
@@ -37,6 +38,10 @@ rl.on('line', async (data) => {
       break;
     case 'add':
       await createFile(data);
+      messageCurrentPath();
+      break;
+    case 'rn':
+      await renameFile(data);
       messageCurrentPath();
       break;
     case '.exit':
