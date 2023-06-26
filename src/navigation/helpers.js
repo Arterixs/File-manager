@@ -66,3 +66,21 @@ export const checkAbsolutePath = (data) => {
   const isAbsolutePath = isAbsolute(normalPath);
   return { isAbsolutePath, normalPath };
 };
+
+export const checkAbsolutePaths = (arr) => {
+  const arrInfoPath = arr.reduce((acc, item) => {
+    const obj = {};
+    obj.path = normalize(item);
+    obj.abs = isAbsolute(obj.path);
+    acc.push(obj);
+    return acc;
+  }, []);
+
+  const pathToFile = arrInfoPath[0].abs
+    ? path.resolve(arrInfoPath[0].path)
+    : path.resolve(env.work_directory, arrInfoPath[0].path);
+  const pathToDesination = arrInfoPath[1].abs
+    ? path.resolve(arrInfoPath[1].path)
+    : path.resolve(env.work_directory, arrInfoPath[1].path);
+  return { pathToFile, pathToDesination };
+};
