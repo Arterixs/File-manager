@@ -1,4 +1,4 @@
-import { stdin, exit } from 'node:process';
+import { stdin, exit, stdout } from 'node:process';
 import { createInterface } from 'node:readline/promises';
 import { env } from 'node:process';
 import './greeting/greeting.js';
@@ -21,9 +21,15 @@ import { decompress } from './gzip/decompress.js';
 
 const rl = createInterface({
   input: stdin,
+  output: stdout,
 });
 
 const correctValueStdin = (data) => data.split(/\s/).at(0);
+
+const goodbyeMessage = () => {
+  rl.close();
+  console.log(`Thank you for using File Manager, ${env.userName}, goodbye!`);
+};
 
 rl.on('line', async (data) => {
   const command = correctValueStdin(data);
@@ -75,14 +81,15 @@ rl.on('line', async (data) => {
       decompress(data);
       break;
     case '.exit':
-      exit(0);
+      goodbyeMessage();
+      break;
     default:
       messageInvalid();
   }
 });
 
-process.on('SIGINT', () => exit(0));
+rl.on('SIGINT', goodbyeMessage);
 
-process.on('exit', () => {
+rl.on('exit', () => {
   console.log(`Thank you for using File Manager, ${env.userName}, goodbye!`);
 });
